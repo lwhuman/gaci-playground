@@ -29,6 +29,9 @@ jobs:
           echo "Event:"
           echo "${{ github.event_name }}"
 
+          echo "Ref:"
+          echo "${{ github.ref }}"
+
       # - name: Inspect runner
       #   run: |
       #     echo "=== Operating system ==="
