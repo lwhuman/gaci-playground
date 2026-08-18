@@ -12,39 +12,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inspect runner
-        run: |
-          echo "=== Operating system ==="
-          uname -a
+      # - name: Inspect runner
+      #   run: |
+      #     echo "=== Operating system ==="
+      #     uname -a
+      #
+      #     echo "=== Current directory ==="
+      #     pwd
+      #
+      #     echo "=== Shell ==="
+      #     which $SHELL
+      #
+      #     echo "=== Repository contents ==="
+      #     ls -la
+      #
+      #     echo "=== Compiler ==="
+      #     gcc --version
+      #
+      #     echo "=== CMake ==="
+      #     cmake --version
+      #
+      #     echo "=== Git ==="
+      #     git --version
 
-          echo "=== Current directory ==="
-          pwd
+      # - name: Show environment
+      #   run: env | sort
+      #
+      # - name: Install dependency
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y jq
 
-          echo "=== Current directory ==="
-          which $SHELL
-
-          echo "=== Repository contents ==="
-          ls -la
-
-          echo "=== Compiler ==="
-          gcc --version
-
-          echo "=== CMake ==="
-          cmake --version
-
-          echo "=== Git ==="
-          git --version
-
-      - name: Show environment
-        run: env | sort
-
-      - name: Install dependency
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
-
-      - name: Check dependency
-        run: jq --version
+      # - name: Check dependency
+      #   run: jq --version
 
       - name: Configure CMake
         run: cmake -S . -B build
