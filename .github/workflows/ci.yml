@@ -20,6 +20,9 @@ jobs:
           echo "=== Current directory ==="
           pwd
 
+          echo "=== Current directory ==="
+          which $SHELL
+
           echo "=== Repository contents ==="
           ls -la
 
@@ -31,6 +34,17 @@ jobs:
 
           echo "=== Git ==="
           git --version
+
+      - name: Show environment
+        run: env | sort
+
+      - name: Install dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Check dependency
+        run: jq --version
 
       - name: Configure CMake
         run: cmake -S . -B build
