@@ -12,6 +12,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Inspect runner
+        run: |
+          echo "=== Operating system ==="
+          uname -a
+
+          echo "=== Current directory ==="
+          pwd
+
+          echo "=== Repository contents ==="
+          ls -la
+
+          echo "=== Compiler ==="
+          gcc --version
+
+          echo "=== CMake ==="
+          cmake --version
+
+          echo "=== Git ==="
+          git --version
+
       - name: Configure CMake
         run: cmake -S . -B build
 
