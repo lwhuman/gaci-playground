@@ -5,46 +5,28 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Inspect runner
-        run: |
-          echo "=== Operating system ==="
-          uname -a
+      - name: Configure CMake
+        run: cmake -S . -B build
 
-          echo "=== Current directory ==="
-          pwd
+      - name: Build
+        run: cmake --build build
 
-          echo "=== Current directory ==="
-          which $SHELL
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
 
-          echo "=== Repository contents ==="
-          ls -la
-
-          echo "=== Compiler ==="
-          gcc --version
-
-          echo "=== CMake ==="
-          cmake --version
-
-          echo "=== Git ==="
-          git --version
-
-      - name: Show environment
-        run: env | sort
-
-      - name: Install dependency
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y jq
-
-      - name: Check dependency
-        run: jq --version
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Configure CMake
         run: cmake -S . -B build
