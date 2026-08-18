@@ -13,6 +13,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Learn Actions data
+        env:
+          TEST_ENVIRONMENT: CI
+        run: |
+          echo "Environment variable:"
+          echo "$TEST_ENVIRONMENT"
+
+          echo "Repository from context:"
+          echo "${{ github.repository }}"
+
+          echo "Commit from context:"
+          echo "${{ github.sha }}"
+
+          echo "Event:"
+          echo "${{ github.event_name }}"
+
       # - name: Inspect runner
       #   run: |
       #     echo "=== Operating system ==="
