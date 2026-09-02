@@ -19,15 +19,11 @@ jobs:
       - name: Build
         run: cmake --build build
 
-      - name: Create artifact
-        run: |
-          echo "This file was created by the Build job." > build-info.txt
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: build-info
-          path: build-info.txt
+          path: build/test1
           retention-days: 1
 
   test:
@@ -39,19 +35,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download build artifact
+      - name: Download test executable
         uses: actions/download-artifact@v4
         with:
-          name: build-info
+          name: test-executable
 
-      - name: Read artifact
-        run: cat build-info.txt
+      - name: Inspect executable
+        run: |
+          ls -l
+          file test1
 
-      - name: Configure CMake
-        run: cmake -S . -B build
-
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
+      - name: Run test
+        run: ./test1
