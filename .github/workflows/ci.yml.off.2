@@ -6,33 +6,15 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.compiler }})
+    name: Build
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        compiler:
-          - gcc
-          - clang
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install compiler
-        run: |
-          if [ "${{ matrix.compiler }}" = "clang" ]; then
-            sudo apt-get update
-            sudo apt-get install -y clang
-          fi
-
       - name: Configure CMake
-        run: |
-          if [ "${{ matrix.compiler }}" = "clang" ]; then
-            CC=clang cmake -S . -B build
-          else
-            CC=gcc cmake -S . -B build
-          fi
+        run: cmake -S . -B build
 
       - name: Build
         run: cmake --build build
