@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.compiler }})
+    name: Build ( ${{ matrix.os }} / ${{ matrix.compiler }} )
     runs-on: ${{ matrix.os }}
 
     strategy:
