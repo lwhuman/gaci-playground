@@ -7,10 +7,14 @@ on:
 jobs:
   build:
     name: Build (${{ matrix.compiler }})
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - ubuntu-24.04
+
         compiler:
           - gcc
           - clang
