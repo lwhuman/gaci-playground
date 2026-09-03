@@ -19,20 +19,30 @@ jobs:
       - name: Build
         run: cmake --build build
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-executable
+          path: build/test1
+          retention-days: 1
+
   test:
     name: Test
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download test executable
+        uses: actions/download-artifact@v4
+        with:
+          name: test-executable
 
-      - name: Configure CMake
-        run: cmake -S . -B build
+      - name: Inspect executable
+        run: |
+          ls -l
+          file test1
 
-      - name: Build
-        run: cmake --build build
-
-      - name: Test
-        run: ctest --test-dir build --output-on-failure
+      - name: Run test executable
+        run: |
+          chmod +x ./test1
+          ./test1

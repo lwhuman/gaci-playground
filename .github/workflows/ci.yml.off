@@ -1,0 +1,71 @@
+name: C Library CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Learn Actions data
+        env:
+          TEST_ENVIRONMENT: CI
+        run: |
+          echo "Environment variable:"
+          echo "$TEST_ENVIRONMENT"
+
+          echo "Repository from context: ${{ github.repository }}"
+          echo "Commit from context: ${{ github.sha }}"
+          echo "Event: ${{ github.event_name }}"
+          echo "Head branch: ${{ github.head_ref }}"
+          echo "Base branch: ${{ github.base_ref }}"
+          echo "Ref: ${{ github.ref }}"
+
+      # - name: Inspect runner
+      #   run: |
+      #     echo "=== Operating system ==="
+      #     uname -a
+      #
+      #     echo "=== Current directory ==="
+      #     pwd
+      #
+      #     echo "=== Shell ==="
+      #     which $SHELL
+      #
+      #     echo "=== Repository contents ==="
+      #     ls -la
+      #
+      #     echo "=== Compiler ==="
+      #     gcc --version
+      #
+      #     echo "=== CMake ==="
+      #     cmake --version
+      #
+      #     echo "=== Git ==="
+      #     git --version
+
+      # - name: Show environment
+      #   run: env | sort
+      #
+      # - name: Install dependency
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y jq
+
+      # - name: Check dependency
+      #   run: jq --version
+
+      - name: Configure CMake
+        run: cmake -S . -B build
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
