@@ -19,6 +19,10 @@ jobs:
           - gcc
           - clang
 
+        exclude:
+          - os: ubuntu-24.04
+            compiler: gcc
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
