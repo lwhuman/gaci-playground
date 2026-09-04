@@ -100,12 +100,19 @@ jobs:
           path: ci-results
           merge-multiple: true
 
-      - name: Show results
+      - name: Generate CI report
         run: |
-          echo "Collected results:"
-          find ci-results -type f -print
+          {
+            echo "# 🧪 CI Build Report"
+            echo
+            echo "| Operating System | Compiler | Status |"
+            echo "|---|---|---|"
 
-          echo
-          echo "Contents:"
-          cat ci-results/*.md
+            for file in ci-results/*.md; do
+              tail -n +3 "$file"
+            done
+          } > CI-Report.md
+
+          echo "Generated report:"
+          cat CI-Report.md
 
