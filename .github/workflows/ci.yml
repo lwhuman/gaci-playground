@@ -52,6 +52,15 @@ jobs:
           path: build/test1
           retention-days: 1
 
+      - name: Generate CI summary
+        if: always()
+        run: |
+          echo "## CI Build Report" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Configuration | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| ${{ matrix.os }} / ${{ matrix.compiler }} | ${{ job.status }} |" >> "$GITHUB_STEP_SUMMARY"
+
   test:
     name: Test
     needs: build
@@ -72,3 +81,4 @@ jobs:
         run: |
           chmod +x ./test1
           ./test1
+
