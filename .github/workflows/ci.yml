@@ -45,6 +45,13 @@ jobs:
       - name: Build
         run: cmake --build build
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-executable
+          path: build/test1
+          retention-days: 1
+
       - name: Generate result
         if: always()
         run: |
@@ -85,11 +92,8 @@ jobs:
 
   report:
     name: Generate CI Report
-
     if: always()
-
     needs: build
-
     runs-on: ubuntu-latest
 
     steps:
@@ -100,7 +104,7 @@ jobs:
           path: ci-results
           merge-multiple: true
 
-      - name: Generate CI report
+      - name: Generate markdown
         run: |
           {
             echo "# 🧪 CI Build Report"
@@ -112,9 +116,6 @@ jobs:
               tail -n +3 "$file"
             done
           } > CI-Report.md
-
-          echo "Generated report:"
-          cat CI-Report.md
 
       - name: Publish CI report
         if: always()
