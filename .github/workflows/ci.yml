@@ -116,3 +116,8 @@ jobs:
           echo "Generated report:"
           cat CI-Report.md
 
+      - name: Publish CI report
+        if: always()
+        run: |
+          cat CI-Report.md >> "$GITHUB_STEP_SUMMARY"
+
