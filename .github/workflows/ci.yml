@@ -104,10 +104,23 @@ jobs:
           path: ci-results
           merge-multiple: true
 
-      - name: Generate markdown
+      - name: Generate report markdown
         run: |
           {
             echo "# 🧪 CI Build Report"
+            echo
+            echo "## CI Information"
+            echo
+            echo "| Property | Value |"
+            echo "|---|---|"
+            echo "| Repository | \`${{ github.repository }}\` |"
+            echo "| Commit | \`${{ github.sha }}\` |"
+            echo "| Branch | \`${{ github.ref_name }}\` |"
+            echo "| Event | \`${{ github.event_name }}\` |"
+            echo "| Run | \`${{ github.run_number }}\` |"
+            echo "| Generated | \`$(date -u '+%Y-%m-%d %H:%M:%S UTC')\` |"
+            echo
+            echo "## Matrix Results"
             echo
             echo "| Operating System | Compiler | Status |"
             echo "|---|---|---|"
