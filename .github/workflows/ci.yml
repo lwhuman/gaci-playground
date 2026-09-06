@@ -61,10 +61,31 @@ jobs:
       - name: Generate result
         if: always()
         run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            STATUS="✅ Passed"
+          elif [ "${{ job.status }}" = "failure" ]; then
+            STATUS="❌ Failed"
+          else
+            STATUS="⏭️ ${{ job.status }}"
+          fi
+
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then
+            OS_NAME="🐧 Ubuntu Latest"
+          elif [ "${{ matrix.os }}" = "ubuntu-24.04" ]; then
+            OS_NAME="🐧 Ubuntu 24.04"
+          else
+            OS_NAME="${{ matrix.os }}"
+          fi
+
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then
+            COMPILER_NAME="GCC"
+          elif [ "${{ matrix.compiler }}" = "clang" ]; then
+            COMPILER_NAME="Clang"
+          else
+            COMPILER_NAME="${{ matrix.compiler }}"
+          fi
           cat > "ci-result-${{ matrix.os }}-${{ matrix.compiler }}.md" <<EOF
-          | OS | Compiler | Status |
-          |---|---|---|
-          | ${{ matrix.os }} | ${{ matrix.compiler }} | ${{ job.status }} |
+          | $OS_NAME | $COMPILER_NAME | $STATUS |
           EOF
 
       - name: Upload CI result
@@ -97,7 +118,7 @@ jobs:
           ./test1
 
   report:
-    name: Generate CI Report
+    name: Generate and publish CI Report
     if: always()
     needs: build
     runs-on: ubuntu-latest
@@ -118,25 +139,11 @@ jobs:
           {
             echo "# 🧪 CI Build Report"
             echo
-            echo "## CI Information"
-            echo
-            echo "| Property | Value |"
-            echo "|---|---|"
-            echo "| Repository | \`${{ github.repository }}\` |"
-            echo "| Commit | \`${{ github.sha }}\` |"
-            echo "| Branch | \`${{ github.ref_name }}\` |"
-            echo "| Event | \`${{ github.event_name }}\` |"
-            echo "| Run | \`${{ github.run_number }}\` |"
-            echo "| Generated | \`$(date -u '+%Y-%m-%d %H:%M:%S UTC')\` |"
-            echo
             echo "## Matrix Results"
             echo
-            echo "| Operating System | Compiler | Status |"
-            echo "|---|---|---|"
-
-            for file in ci-results/*.md; do
-              tail -n +3 "$file"
-            done
+            echo "| Platform | Compiler | Status |"
+            echo "|:---|:---|:---:|"
+            cat ci-results/*.md
           } > CI-Report.md
 
       - name: Publish CI report to GITHUB_STEP_SUMMARY
